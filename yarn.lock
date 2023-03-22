@@ -224,10 +224,10 @@
     next-transpile-modules "^9.0.0"
     semver "^7.3.8"
 
-"@makeswift/runtime@0.0.0-20230322204534":
-  version "0.0.0-20230322204534"
-  resolved "https://registry.yarnpkg.com/@makeswift/runtime/-/runtime-0.0.0-20230322204534.tgz#9b3fc3f37662aea608b70e87d99b522af1a88e4a"
-  integrity sha512-qs5nnFm/QGtRUUsXYeBPUjq5OeZKL7LnW9x25Ne9UhsuUs5Y/e7T71ZAq/E0ktg1rKAri+5syyRXEwHurkA6qQ==
+"@makeswift/runtime@0.0.0-20230322211206":
+  version "0.0.0-20230322211206"
+  resolved "https://registry.yarnpkg.com/@makeswift/runtime/-/runtime-0.0.0-20230322211206.tgz#8015fdbbab9ad02679076a5d3977738b39248554"
+  integrity sha512-ifUkaVuzJ4yelBYTPTvgxQBao7cdc4ObhUc5fmOUyEO4WFcAurEYCV4kF1lnhuPkcVKH2uHwItSCvY9CN5noSw==
   dependencies:
     "@convertkit/slate-lists" "^0.2.4"
     "@emotion/css" "^11.9.0"
