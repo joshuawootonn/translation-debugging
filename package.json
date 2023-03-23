@@ -7,7 +7,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@makeswift/runtime": "0.0.0-20230323134605",
+    "@makeswift/runtime": "0.0.0-20230323141333",
     "next": "^13.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
