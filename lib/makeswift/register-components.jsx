@@ -1,4 +1,4 @@
-import { Slot, Style, RichText, Image } from "@makeswift/runtime/controls";
+import { Slot, Style, RichText, Image, TextInput } from "@makeswift/runtime/controls";
 import { ReactRuntime } from "@makeswift/runtime/react";
 import { forwardRef } from "react";
 
@@ -18,6 +18,7 @@ const TwoInput = forwardRef(function HelloWorld(
       {...props}
     >
       <div>{title}</div>
+      <div style={{ height: "100px" }}></div>
       <div style={{ minWidth: "200px" }}>{body}</div>
     </div>
   );
@@ -57,7 +58,6 @@ const DivTest = forwardRef(function HelloWorld(
     </div>
   );
 });
-
 ReactRuntime.registerComponent(TwoInput, {
   type: "two",
   label: "2",
@@ -81,5 +81,31 @@ ReactRuntime.registerComponent(DivTest, {
   label: "Div Test",
   props: {
     className: Style({ properties: Style.All }),
+  },
+});
+
+
+const MyButton = forwardRef(function MyButton(
+  { text, className, ...props },
+  ref
+) {
+  return (
+    <a
+      ref={ref}
+      className={`${className}`}
+      style={{ padding: "10px 20px", backgroundColor: "black", borderRadius: '5px', color: "white", textAlign: 'center', }}
+      {...props}
+    >
+      Hello World
+    </a>
+  );
+});
+
+ReactRuntime.registerComponent(MyButton, {
+  type: "myButton",
+  label: "My Button",
+  props: {
+    className: Style({ properties: Style.Default }),
+    text: TextInput({label: "Text"})
   },
 });
