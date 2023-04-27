@@ -1,5 +1,17 @@
-import { Slot, Style, RichText, Image, TextInput } from "@makeswift/runtime/controls";
+import {
+  Slot,
+  Style,
+  RichText,
+  Image,
+  TextInput,
+  RichTextV2,
+  RichTextControlTypeV2,
+  Select,
+  BlockType,
+} from "@makeswift/runtime/controls";
 import { ReactRuntime } from "@makeswift/runtime/react";
+import { Block } from "@makeswift/runtime/slate";
+
 import { forwardRef } from "react";
 
 const TwoInput = forwardRef(function HelloWorld(
@@ -25,7 +37,7 @@ const TwoInput = forwardRef(function HelloWorld(
 });
 
 const OneInput = forwardRef(function HelloWorld(
-  { title, image, className, ...props },
+  { node, image, className, ...props },
   ref
 ) {
   return (
@@ -38,7 +50,7 @@ const OneInput = forwardRef(function HelloWorld(
       }}
       {...props}
     >
-      {title}
+      {node}
     </div>
   );
 });
@@ -72,40 +84,48 @@ ReactRuntime.registerComponent(OneInput, {
   type: "one",
   label: "1",
   props: {
-    className: Style({ properties: Style.All }),
-    title: RichText(),
+    className: Style({ properties: Style.Default }),
+    node: RichTextV2({
+      controls: [
+        Select({
+          label: "Inline",
+          options: [
+            {
+              value: "code",
+              label: "Code",
+            },
+            {
+              value: "superscript",
+              label: "Super",
+            },
+          ],
+        }),
+      ],
+      plugins: [
+        {
+          binding: {
+            onChange: (editor, value) => {
+              Block.wrapInline(editor, {
+                type: value,
+                children: [],
+              });
+            },
+            value: (editor) => {
+              return Block.getInlinesInSelection(editor)
+                .map((inline) => inline[0].type)
+                .at(0);
+            },
+          },
+        },
+      ],
+    }),
   },
 });
+
 ReactRuntime.registerComponent(DivTest, {
   type: "div-test",
   label: "Div Test",
   props: {
     className: Style({ properties: Style.All }),
-  },
-});
-
-
-const MyButton = forwardRef(function MyButton(
-  { text, className, ...props },
-  ref
-) {
-  return (
-    <a
-      ref={ref}
-      className={`${className}`}
-      style={{ padding: "10px 20px", backgroundColor: "black", borderRadius: '5px', color: "white", textAlign: 'center', }}
-      {...props}
-    >
-      Hello World
-    </a>
-  );
-});
-
-ReactRuntime.registerComponent(MyButton, {
-  type: "myButton",
-  label: "My Button",
-  props: {
-    className: Style({ properties: Style.Default }),
-    text: TextInput({label: "Text"})
   },
 });
