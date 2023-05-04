@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "lib/makeswift/register-components.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "lib/makeswift/register-components.tsx"],
   "exclude": ["node_modules"]
 }
