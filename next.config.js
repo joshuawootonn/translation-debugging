@@ -8,4 +8,4 @@ const nextConfig = {
   reactStrictMode: true,
 };
 
-module.exports = withMakeswift(nextConfig);
+module.exports = withBundleAnalyzer(withMakeswift(nextConfig));

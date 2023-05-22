@@ -5,11 +5,13 @@
     "dev:local": "env-cmd -f ./.env.localhost next dev -p 3000",
     "dev:deployed": "env-cmd -f ./.env.deployed next dev -p 3001",
     "build": "next build",
+    "build:deployed": "env-cmd -f ./.env.deployed next build",
     "start": "next start",
+    "start:deployed": "env-cmd -f ./.env.deployed next start -p 3001",
     "lint": "next lint"
   },
   "dependencies": {
-    "@makeswift/runtime": "0.0.0-20230504203622",
+    "@makeswift/runtime": "^0.8.10",
     "@next/bundle-analyzer": "^13.2.4",
     "classnames": "^2.3.2",
     "is-hotkey": "^0.2.0",

@@ -1,5 +1,18 @@
-import { Style, RichText } from "@makeswift/runtime/controls";
+import {
+  RichTextV2Control,
+  RichTextV2Mode,
+  unstable_RichTextV2,
+} from "@makeswift/runtime/controls";
+import {
+  Style,
+  RichText,
+  List,
+  TextInput,
+  Slot,
+  Shape,
+} from "@makeswift/runtime/controls";
 import { ReactRuntime } from "@makeswift/runtime/react";
+import { BlockPlugin,TextAlignPlugin } from "@makeswift/runtime/slate";
 import classNames from "classnames";
 
 import { KeyboardEvent, forwardRef } from "react";
@@ -51,12 +64,22 @@ ReactRuntime.registerComponent(TwoInput, {
   },
 });
 
+ReactRuntime.registerComponent(TwoInput, {
+  type: "twoV2",
+  label: "2V2",
+  props: {
+    className: Style({ properties: Style.All }),
+    title: unstable_RichTextV2({ plugins: [BlockPlugin()] }),
+    body: unstable_RichTextV2(),
+  },
+});
+
 /**
  * List of RichText
  */
 
 const BlockDemo = forwardRef(function HelloWorld(
-  { nodes, node, node2, image, className, ...props }: any,
+  { nodes, node, nodes1, node2, image, className, ...props }: any,
   ref
 ) {
   return (
@@ -69,28 +92,33 @@ const BlockDemo = forwardRef(function HelloWorld(
       }}
       {...props}
     >
-      {nodes.map((node: any, key: number) => (
+      V2
+      {nodes?.map((node: any, key: number) => (
+        <div key={key}>{node}</div>
+      ))}
+      V1
+      {nodes1?.map((node: any, key: number) => (
         <div key={key}>{node}</div>
       ))}
     </div>
   );
 });
 
-// ReactRuntime.registerComponent(BlockDemo, {
-//   type: "one",
-//   label: "List of RichText",
-//   props: {
-//     className: Style({ properties: Style.Default }),
+ReactRuntime.registerComponent(BlockDemo, {
+  type: "one",
+  label: "List of RichText",
+  props: {
+    className: Style({ properties: Style.Default }),
 
-//     nodes: List({
-//       type: RichTextV2(),
-//     }),
+    // nodes: List({
+    //   type: RichText(),
+    // }),
 
-//     // node1: RichTextV2({
-//     //   plugins: [OtherInline],
-//     // }),
-//   },
-// });
+    // nodes1: List({
+    //   type: RichText(),
+    // }),
+  },
+});
 
 /**
  * Single RichText
@@ -115,19 +143,19 @@ const SingleRichText = forwardRef(function HelloWorld(
   );
 });
 
-// ReactRuntime.registerComponent(SingleRichText, {
-//   type: "asdfasdf",
-//   label: "Single RichText",
-//   props: {
-//     className: Style({ properties: Style.Default }),
+ReactRuntime.registerComponent(SingleRichText, {
+  type: "asdfasdf",
+  label: "Single RichText V2",
+  props: {
+    className: Style({ properties: Style.Default }),
 
-//     node: RichTextV2(),
+    node: unstable_RichTextV2({ plugins: [BlockPlugin(), TextAlignPlugin()] }),
 
-//     // node1: RichTextV2({
-//     //   plugins: [OtherInline],
-//     // }),
-//   },
-// });
+    // node1: RichTextV2({
+    //   plugins: [OtherInline],
+    // }),
+  },
+});
 
 /**
  * Inline Demo
@@ -144,7 +172,7 @@ const RichButton = forwardRef(function HelloWorld(
         className,
         "w-auto min-w-[100px] bg-black text-white text-center rounded-md py-2 px-5"
       )}
-      onClick={() => window.alert("ahhh geeez")}
+      // onClick={() => window.alert("ahhh geeez")}
       {...props}
     >
       {node}
@@ -157,9 +185,7 @@ ReactRuntime.registerComponent(RichButton, {
   label: "Inline Demo",
   props: {
     className: Style({ properties: [Style.Margin] }),
-    // node: RichTextV2({
-    //   plugins: [Inline],
-    // }),
+    node: unstable_RichTextV2({ mode: RichTextV2Mode.Inline }),
   },
 });
 
