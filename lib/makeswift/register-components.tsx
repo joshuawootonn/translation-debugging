@@ -1,210 +1,138 @@
 import {
-  RichTextV2Control,
-  RichTextV2Mode,
-  unstable_RichTextV2,
-} from "@makeswift/runtime/controls";
-import {
   Style,
-  RichText,
+  ControlDefinitionData,
+  Select,
+  StyleV2CSSObject,
+  unstable_RichTextV2,
+  unstable_StyleV2,
   List,
-  TextInput,
-  Slot,
+  Number,
   Shape,
+  TextInput,
 } from "@makeswift/runtime/controls";
 import { ReactRuntime } from "@makeswift/runtime/react";
-import { BlockPlugin,TextAlignPlugin } from "@makeswift/runtime/slate";
-import classNames from "classnames";
+import { BlockPlugin, TextAlignPlugin } from "@makeswift/runtime/slate";
 
-import { KeyboardEvent, forwardRef } from "react";
+import { ForwardedRef, forwardRef } from "react";
 
-const TwoInput = forwardRef(function HelloWorld(
-  { title, body, image, className, ...props }: any,
+/**
+ * RichTextV2
+ */
+
+const RichTextV2 = forwardRef(function HelloWorld(
+  { nodes, node, node2, image, className, textAlignDefinition, ...props }: any,
   ref
 ) {
   return (
     <div
       ref={ref}
-      className={className}
+      className={className + " space-y-3"}
       style={{
-        // display: "flex",
-        // flexDirection: "column",
+        gap: "20px",
         padding: "20px",
       }}
       {...props}
     >
-      <div>{title}</div>
-      <div style={{ height: "100px" }}></div>
-      <div style={{ minWidth: "200px" }}>{body}</div>
+      {node}
+      {JSON.stringify(textAlignDefinition)}
     </div>
   );
 });
 
-const DivTest = forwardRef(function HelloWorld(
-  { title, image, className, ...props }: any,
-  ref
+ReactRuntime.registerComponent(RichTextV2, {
+  type: "richtext-v2",
+  label: "RichText V2",
+  props: {
+    className: Style({ properties: Style.Default }),
+
+    node: unstable_RichTextV2({ plugins: [BlockPlugin(), TextAlignPlugin()] }),
+  },
+});
+
+/**
+ * StyleV2
+ */
+
+const StyleV2Test = forwardRef(function HelloWorld(
+  {
+    className,
+    className2,
+    className3,
+    ...props
+  }: {
+    className?: string;
+    className2?: StyleV2CSSObject | string;
+    className3?: string;
+  },
+  ref: ForwardedRef<HTMLDivElement>
 ) {
   return (
     <div
       ref={ref}
-      className={className}
-      style={{ paddingBottom: "20px" }}
+      className={`${className} ${className2} ${className3}`}
+      style={{ padding: "20px", width: "500px" }}
       {...props}
     >
       Hello World
     </div>
   );
 });
-ReactRuntime.registerComponent(TwoInput, {
-  type: "two",
-  label: "2",
+
+const textAlignDefinition = Select({
+  options: [
+    {
+      label: "Left",
+      value: "left",
+    },
+    {
+      label: "Center",
+      value: "center",
+    },
+    {
+      label: "Right",
+      value: "right",
+    },
+  ],
+  defaultValue: "left",
+});
+
+const listOfNumbers = List({
+  type: Shape({
+    type: {
+      xOffset: Number(),
+      yOffset: Number(),
+      blur: Number(),
+      color: TextInput(),
+    },
+  }),
+});
+
+ReactRuntime.registerComponent(StyleV2Test, {
+  type: "StyleV2Test",
+  label: "StyleV2 Test",
   props: {
     className: Style({ properties: Style.All }),
-    title: RichText(),
-    body: RichText(),
-  },
-});
-
-ReactRuntime.registerComponent(TwoInput, {
-  type: "twoV2",
-  label: "2V2",
-  props: {
-    className: Style({ properties: Style.All }),
-    title: unstable_RichTextV2({ plugins: [BlockPlugin()] }),
-    body: unstable_RichTextV2(),
-  },
-});
-
-/**
- * List of RichText
- */
-
-const BlockDemo = forwardRef(function HelloWorld(
-  { nodes, node, nodes1, node2, image, className, ...props }: any,
-  ref
-) {
-  return (
-    <div
-      ref={ref}
-      className={className + " space-y-3"}
-      style={{
-        gap: "20px",
-        padding: "20px",
-      }}
-      {...props}
-    >
-      V2
-      {nodes?.map((node: any, key: number) => (
-        <div key={key}>{node}</div>
-      ))}
-      V1
-      {nodes1?.map((node: any, key: number) => (
-        <div key={key}>{node}</div>
-      ))}
-    </div>
-  );
-});
-
-ReactRuntime.registerComponent(BlockDemo, {
-  type: "one",
-  label: "List of RichText",
-  props: {
-    className: Style({ properties: Style.Default }),
-
-    // nodes: List({
-    //   type: RichText(),
-    // }),
-
-    // nodes1: List({
-    //   type: RichText(),
-    // }),
-  },
-});
-
-/**
- * Single RichText
- */
-
-const SingleRichText = forwardRef(function HelloWorld(
-  { nodes, node, node2, image, className, ...props }: any,
-  ref
-) {
-  return (
-    <div
-      ref={ref}
-      className={className + " space-y-3"}
-      style={{
-        gap: "20px",
-        padding: "20px",
-      }}
-      {...props}
-    >
-      {node}
-    </div>
-  );
-});
-
-ReactRuntime.registerComponent(SingleRichText, {
-  type: "asdfasdf",
-  label: "Single RichText V2",
-  props: {
-    className: Style({ properties: Style.Default }),
-
-    node: unstable_RichTextV2({ plugins: [BlockPlugin(), TextAlignPlugin()] }),
-
-    // node1: RichTextV2({
-    //   plugins: [OtherInline],
-    // }),
-  },
-});
-
-/**
- * Inline Demo
- */
-
-const RichButton = forwardRef(function HelloWorld(
-  { node, image, className, ...props }: any,
-  ref
-) {
-  return (
-    <button
-      ref={ref}
-      className={classNames(
-        className,
-        "w-auto min-w-[100px] bg-black text-white text-center rounded-md py-2 px-5"
-      )}
-      // onClick={() => window.alert("ahhh geeez")}
-      {...props}
-    >
-      {node}
-    </button>
-  );
-});
-
-ReactRuntime.registerComponent(RichButton, {
-  type: "three",
-  label: "Inline Demo",
-  props: {
-    className: Style({ properties: [Style.Margin] }),
-    node: unstable_RichTextV2({ mode: RichTextV2Mode.Inline }),
-  },
-});
-
-// ReactRuntime.registerComponent(RichButton, {
-//   type: "three",
-//   label: "Inline Demo",
-//   props: {
-//     className: Style({ properties: [Style.Margin] }),
-//     node: RichTextV2({
-//       mode: "block" | "inline"
-//       plugins: [Block],
-//     }),
-//   },
-// });
-
-ReactRuntime.registerComponent(DivTest, {
-  type: "div-test",
-  label: "Div Test",
-  props: {
-    className: Style({ properties: Style.All }),
+    className2: unstable_StyleV2({
+      type: textAlignDefinition,
+      getStyle(textAlign: ControlDefinitionData<typeof textAlignDefinition>) {
+        return { textAlign: textAlign ?? "left" };
+      },
+    }),
+    className3: unstable_StyleV2({
+      type: listOfNumbers,
+      getStyle(numbers: ControlDefinitionData<typeof listOfNumbers> = []) {
+        return {
+          boxShadow: numbers
+            .map((shadow) => {
+              return `${shadow?.value?.xOffset ?? 0}px ${
+                shadow?.value?.yOffset ?? 0
+              }px ${shadow?.value?.blur ?? 0}px ${
+                shadow?.value?.color ?? "red"
+              }`;
+            })
+            .join(","),
+        };
+      },
+    }),
   },
 });
