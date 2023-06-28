@@ -1,19 +1,25 @@
 import {
   Style,
-  ControlDefinitionData,
-  Select,
-  StyleV2CSSObject,
   unstable_RichTextV2,
   unstable_StyleV2,
   List,
   Number,
   Shape,
-  TextInput,
+  Color,
+  Link,
+  RichText,
 } from "@makeswift/runtime/controls";
+import { ControlDefinitionValue } from "@makeswift/runtime/dist/types/src/runtimes/react/controls/control";
 import { ReactRuntime } from "@makeswift/runtime/react";
-import { BlockPlugin, TextAlignPlugin } from "@makeswift/runtime/slate";
+import {
+  BlockPlugin,
+  InlinePlugin,
+  LinkPlugin,
+  TextAlignPlugin,
+  TypographyPlugin,
+} from "@makeswift/runtime/slate";
 
-import { ForwardedRef, forwardRef } from "react";
+import { ForwardedRef, forwardRef, ReactNode } from "react";
 
 /**
  * RichTextV2
@@ -45,7 +51,47 @@ ReactRuntime.registerComponent(RichTextV2, {
   props: {
     className: Style({ properties: Style.Default }),
 
-    node: unstable_RichTextV2({ plugins: [BlockPlugin(), TextAlignPlugin()] }),
+    node: unstable_RichTextV2({
+      plugins: [
+        TypographyPlugin(),
+        BlockPlugin(),
+        TextAlignPlugin(),
+        // ColorPlugin(),
+        InlinePlugin(),
+        LinkPlugin(),
+      ],
+    }),
+  },
+});
+
+const InlineMode = forwardRef(function HelloWorld(
+  { node, ...props }: any,
+  ref
+) {
+  return (
+    <button ref={ref} {...props}>
+      {node}
+    </button>
+  );
+});
+
+ReactRuntime.registerComponent(InlineMode, {
+  type: "inline-mode-test",
+  label: "Inline Mode Test",
+  props: {
+    className: Style({ properties: Style.Default }),
+
+    node: unstable_RichTextV2({
+      mode: "makeswift::controls::rich-text-v2::mode::inline",
+      // plugins: [
+      //   TypographyPlugin(),
+      //   BlockPlugin(),
+      //   TextAlignPlugin(),
+      //   // ColorPlugin(),
+      //   InlinePlugin(),
+      //   LinkPlugin(),
+      // ],
+    }),
   },
 });
 
@@ -58,19 +104,23 @@ const StyleV2Test = forwardRef(function HelloWorld(
     className,
     className2,
     className3,
+    className4,
+    fontSize,
     ...props
   }: {
     className?: string;
-    className2?: StyleV2CSSObject | string;
+    className2?: string;
     className3?: string;
+    className4?: string;
+    fontSize?: number;
   },
   ref: ForwardedRef<HTMLDivElement>
 ) {
   return (
     <div
       ref={ref}
-      className={`${className} ${className2} ${className3}`}
-      style={{ padding: "20px", width: "500px" }}
+      className={`${className} ${className2} ${className3} ${className4}`}
+      style={{ padding: "20px", fontSize: `${fontSize ?? 20}px` }}
       {...props}
     >
       Hello World
@@ -78,61 +128,179 @@ const StyleV2Test = forwardRef(function HelloWorld(
   );
 });
 
-const textAlignDefinition = Select({
-  options: [
-    {
-      label: "Left",
-      value: "left",
-    },
-    {
-      label: "Center",
-      value: "center",
-    },
-    {
-      label: "Right",
-      value: "right",
-    },
-  ],
-  defaultValue: "left",
+const backgroundDefinition = Color({
+  label: "bg",
 });
 
-const listOfNumbers = List({
-  type: Shape({
-    type: {
-      xOffset: Number(),
-      yOffset: Number(),
-      blur: Number(),
-      color: TextInput(),
-    },
-  }),
+const colorShapeDefinition = Shape({
+  type: {
+    border: Color({ label: "border" }),
+    text: Color({ label: "text" }),
+  },
 });
 
 ReactRuntime.registerComponent(StyleV2Test, {
   type: "StyleV2Test",
   label: "StyleV2 Test",
   props: {
-    className: Style({ properties: Style.All }),
+    shape: Shape({
+      type: {
+        border: Color({ label: "border" }),
+        text: Color({ label: "text" }),
+      },
+    }),
     className2: unstable_StyleV2({
-      type: textAlignDefinition,
-      getStyle(textAlign: ControlDefinitionData<typeof textAlignDefinition>) {
-        return { textAlign: textAlign ?? "left" };
+      type: backgroundDefinition,
+      getStyle(color: ControlDefinitionValue<typeof backgroundDefinition>) {
+        return { backgroundColor: color ?? "grey" };
       },
     }),
     className3: unstable_StyleV2({
-      type: listOfNumbers,
-      getStyle(numbers: ControlDefinitionData<typeof listOfNumbers> = []) {
+      type: colorShapeDefinition,
+      getStyle(colors: ControlDefinitionValue<typeof colorShapeDefinition>) {
         return {
-          boxShadow: numbers
-            .map((shadow) => {
-              return `${shadow?.value?.xOffset ?? 0}px ${
-                shadow?.value?.yOffset ?? 0
-              }px ${shadow?.value?.blur ?? 0}px ${
-                shadow?.value?.color ?? "red"
-              }`;
-            })
-            .join(","),
+          color: colors?.text ?? "black",
+          border: `4px solid ${colors?.border ?? "black"}`,
         };
       },
     }),
+
+    // className4: unstable_StyleV2({
+    //   type: boxShadowDefinitions,
+    //   getStyle(
+    //     boxShadowNumbers: ControlDefinitionValue<typeof boxShadowDefinitions>
+    //   ) {
+    //     if (boxShadowNumbers == null) {
+    //       return {};
+    //     }
+    //     // console.log({
+    //     //   boxShadowNumbers,
+    //     //   style: {
+    //     //     boxShadow: `${boxShadowNumbers?.at(0)}px ${boxShadowNumbers?.at(
+    //     //       0
+    //     //     )}px ${boxShadowNumbers?.at(0)}px purple;`,
+    //     //   },
+    //     // });
+
+    //     return {
+    //       boxShadow: boxShadowNumbers
+    //         .map(
+    //           (boxShadow) =>
+    //             `${boxShadow?.x}px ${boxShadow?.y}px ${boxShadow?.blur}px ${boxShadow.color}`
+    //         )
+    //         .join(","),
+    //     };
+    //   },
+    // }),
+  },
+});
+
+const TypographyTest = forwardRef(function HelloWorld(
+  {
+    className,
+    className2,
+    ...props
+  }: {
+    className?: string;
+    className2?: string;
+  },
+  ref: ForwardedRef<HTMLDivElement>
+) {
+  // console.log({ className2 });
+
+  return (
+    <div
+      ref={ref}
+      className={`${className} ${className2}`}
+      style={{ padding: "20px" }}
+      {...props}
+    >
+      Hello World
+    </div>
+  );
+});
+
+ReactRuntime.registerComponent(TypographyTest, {
+  type: "TypographyTest",
+  label: "Typography Test",
+  props: {
+    className: Style({ properties: [Style.Width, Style.Margin] }),
+    // className2: unstable_Typography(),
+  },
+});
+
+const LinkInShapeTest = forwardRef(function HelloWorld(
+  {
+    className,
+    links,
+    ...props
+  }: {
+    className?: string;
+    links?: any;
+  },
+  ref: ForwardedRef<HTMLDivElement>
+) {
+  // console.log({ className2 });
+  // console.log({ links });
+
+  return (
+    <div
+      ref={ref}
+      className={`${className}`}
+      style={{ padding: "20px" }}
+      {...props}
+    >
+      {JSON.stringify(links)}
+    </div>
+  );
+});
+
+ReactRuntime.registerComponent(LinkInShapeTest, {
+  type: "LinkInShapeTest",
+  label: "LinkInShapeTest",
+  props: {
+    className: Style({ properties: [Style.Width, Style.Margin] }),
+    links: Shape({
+      type: {
+        link1: Link(),
+        link2: Link(),
+      },
+    }),
+  },
+});
+
+const RichtextUpgrade = forwardRef(function HelloWorld(
+  {
+    className,
+    richtext,
+    ...props
+  }: {
+    className?: string;
+    richtext?: ReactNode;
+  },
+  ref: ForwardedRef<HTMLDivElement>
+) {
+  return (
+    <div ref={ref} className={className} style={{ padding: "20px" }} {...props}>
+      {richtext}
+    </div>
+  );
+});
+
+ReactRuntime.registerComponent(RichtextUpgrade, {
+  type: "rich-text-v1",
+  label: "rich-text-component",
+  props: {
+    // richtext: RichText(),
+    richtext: unstable_RichTextV2({
+      plugins: [
+        TypographyPlugin(),
+        BlockPlugin(),
+        TextAlignPlugin(),
+        InlinePlugin(),
+        LinkPlugin(),
+      ],
+    }),
+    className: Style({ properties: [Style.Width, Style.Margin] }),
   },
 });

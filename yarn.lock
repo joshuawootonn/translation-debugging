@@ -260,10 +260,10 @@
     escalade "3.1.1"
     semver "^7.3.8"
 
-"@makeswift/runtime@^0.9.1":
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/@makeswift/runtime/-/runtime-0.9.1.tgz#ac4df50945c29694006cb5337b2695f6d3a71828"
-  integrity sha512-QjUJHy1bRjr3wXdmSrJJmqJn0L6ZE2ACxa6kDRkysm/32ZraksQvOSqxieTwiJpeFNzvF2kVu4TabH2K+13Zqw==
+"@makeswift/runtime@^0.9.7":
+  version "0.9.7"
+  resolved "https://registry.yarnpkg.com/@makeswift/runtime/-/runtime-0.9.7.tgz#f6c46005ec5bfbd55548297b5711be48e2039e2e"
+  integrity sha512-72e/dTLAPGr3yW31BI6JhYE2tiDes3Ab4jHtYm4wYvfIHBljiWt8MKT91e5hvImnq0r7cjlUqumlh0JKIqTSmg==
   dependencies:
     "@emotion/css" "^11.9.0"
     "@emotion/serialize" "^1.0.3"
