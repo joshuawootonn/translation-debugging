@@ -1,6 +1,5 @@
 import {
   Style,
-  unstable_RichTextV2,
   unstable_StyleV2,
   List,
   Number,
@@ -20,6 +19,43 @@ import {
 } from "@makeswift/runtime/slate";
 
 import { ForwardedRef, forwardRef, ReactNode } from "react";
+
+import { Disclosure } from "@headlessui/react";
+import { ChevronUpIcon } from "@heroicons/react/20/solid";
+
+function MyDisclosure({ className, richtextButton, richtextPanel }: any) {
+  return (
+    <Disclosure as="div" className={className}>
+      {({ open }) => (
+        <>
+          <Disclosure.Button className="flex w-full justify-between items-center rounded-lg bg-purple-100 px-4 py-2 text-left text-lg font-bold text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75">
+            <span className="flex-grow">{richtextButton}</span>
+            <ChevronUpIcon
+              className={`${
+                open ? "rotate-180 transform" : ""
+              } h-5 w-5 text-purple-500`}
+            />
+          </Disclosure.Button>
+          <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm">
+            {richtextPanel}
+          </Disclosure.Panel>
+        </>
+      )}
+    </Disclosure>
+  );
+}
+
+ReactRuntime.registerComponent(MyDisclosure, {
+  type: "disclosure",
+  label: "Disclosure",
+  props: {
+    richtextButton: RichText({
+      mode: RichText.Mode.Inline,
+    }),
+    richtextPanel: RichText(),
+    className: Style({ properties: Style.All }),
+  },
+});
 
 /**
  * RichTextV2
@@ -51,25 +87,20 @@ ReactRuntime.registerComponent(RichTextV2, {
   props: {
     className: Style({ properties: Style.Default }),
 
-    node: unstable_RichTextV2({
-      plugins: [
-        TypographyPlugin(),
-        BlockPlugin(),
-        TextAlignPlugin(),
-        // ColorPlugin(),
-        InlinePlugin(),
-        LinkPlugin(),
-      ],
-    }),
+    node: RichText(),
   },
 });
 
 const InlineMode = forwardRef(function HelloWorld(
-  { node, ...props }: any,
+  { node, className, ...props }: any,
   ref
 ) {
   return (
-    <button ref={ref} {...props}>
+    <button
+      className={`${className} text-3xl font-bold  bg-gray-200 px-3 py-2 rounded-xl`}
+      ref={ref}
+      {...props}
+    >
       {node}
     </button>
   );
@@ -79,18 +110,10 @@ ReactRuntime.registerComponent(InlineMode, {
   type: "inline-mode-test",
   label: "Inline Mode Test",
   props: {
-    className: Style({ properties: Style.Default }),
+    className: Style({ properties: [Style.Margin] }),
 
-    node: unstable_RichTextV2({
-      mode: "makeswift::controls::rich-text-v2::mode::inline",
-      // plugins: [
-      //   TypographyPlugin(),
-      //   BlockPlugin(),
-      //   TextAlignPlugin(),
-      //   // ColorPlugin(),
-      //   InlinePlugin(),
-      //   LinkPlugin(),
-      // ],
+    node: RichText({
+      mode: RichText.Mode.Inline,
     }),
   },
 });
@@ -292,15 +315,7 @@ ReactRuntime.registerComponent(RichtextUpgrade, {
   label: "rich-text-component",
   props: {
     // richtext: RichText(),
-    richtext: unstable_RichTextV2({
-      plugins: [
-        TypographyPlugin(),
-        BlockPlugin(),
-        TextAlignPlugin(),
-        InlinePlugin(),
-        LinkPlugin(),
-      ],
-    }),
+    richtext: RichText(),
     className: Style({ properties: [Style.Width, Style.Margin] }),
   },
 });

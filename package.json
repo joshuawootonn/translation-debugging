@@ -3,7 +3,7 @@
   "scripts": {
     "dev": "NODE_OPTIONS='--inspect' next dev",
     "dev:local": "env-cmd -f ./.env.localhost  next dev -p 3000",
-    "dev:prod": "env-cmd -f ./.env.prod next dev -p 3001",
+    "dev:prod": "env-cmd -f ./.env.prod next dev -p 3002",
     "dev:staging": "env-cmd -f ./.env.staging next dev -p 3001",
     "build": "next build",
     "build:deployed": "env-cmd -f ./.env.deployed next build",
@@ -12,7 +12,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@makeswift/runtime": "^0.9.7",
+    "@headlessui/react": "^1.7.15",
+    "@heroicons/react": "^2.0.18",
+    "@makeswift/runtime": "^0.10.3",
     "@next/bundle-analyzer": "^13.2.4",
     "classnames": "^2.3.2",
     "is-hotkey": "^0.2.0",
