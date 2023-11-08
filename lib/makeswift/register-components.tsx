@@ -51,6 +51,7 @@ ReactRuntime.registerComponent(MyDisclosure, {
   props: {
     richtextButton: RichText({
       mode: RichText.Mode.Inline,
+      defaultValue: "yoooyyyyo",
     }),
     richtextPanel: RichText(),
     className: Style({ properties: Style.All }),
