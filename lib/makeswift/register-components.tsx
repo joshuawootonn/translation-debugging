@@ -23,6 +23,8 @@ import { ForwardedRef, forwardRef, ReactNode } from "react";
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
 
+export const runtime = new ReactRuntime()
+
 function MyDisclosure({ className, richtextButton, richtextPanel }: any) {
   return (
     <Disclosure as="div" className={className + " p-5"}>
@@ -45,7 +47,7 @@ function MyDisclosure({ className, richtextButton, richtextPanel }: any) {
   );
 }
 
-ReactRuntime.registerComponent(MyDisclosure, {
+runtime.registerComponent(MyDisclosure, {
   type: "disclosure",
   label: "Disclosure",
   props: {
@@ -82,7 +84,7 @@ const RichTextV2 = forwardRef(function HelloWorld(
   );
 });
 
-ReactRuntime.registerComponent(RichTextV2, {
+runtime.registerComponent(RichTextV2, {
   type: "richtext-v2",
   label: "RichText V2",
   props: {
@@ -107,7 +109,7 @@ const InlineMode = forwardRef(function HelloWorld(
   );
 });
 
-ReactRuntime.registerComponent(InlineMode, {
+runtime.registerComponent(InlineMode, {
   type: "inline-mode-test",
   label: "Inline Mode Test",
   props: {
@@ -163,7 +165,7 @@ const colorShapeDefinition = Shape({
   },
 });
 
-ReactRuntime.registerComponent(StyleV2Test, {
+runtime.registerComponent(StyleV2Test, {
   type: "StyleV2Test",
   label: "StyleV2 Test",
   props: {
@@ -244,7 +246,7 @@ const TypographyTest = forwardRef(function HelloWorld(
   );
 });
 
-ReactRuntime.registerComponent(TypographyTest, {
+runtime.registerComponent(TypographyTest, {
   type: "TypographyTest",
   label: "Typography Test",
   props: {
@@ -279,7 +281,7 @@ const LinkInShapeTest = forwardRef(function HelloWorld(
   );
 });
 
-ReactRuntime.registerComponent(LinkInShapeTest, {
+runtime.registerComponent(LinkInShapeTest, {
   type: "LinkInShapeTest",
   label: "LinkInShapeTest",
   props: {
@@ -311,7 +313,7 @@ const RichtextUpgrade = forwardRef(function HelloWorld(
   );
 });
 
-ReactRuntime.registerComponent(RichtextUpgrade, {
+runtime.registerComponent(RichtextUpgrade, {
   type: "rich-text-v1",
   label: "rich-text-component",
   props: {

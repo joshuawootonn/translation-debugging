@@ -11,6 +11,7 @@ import {
   Page as MakeswiftPage,
   PageProps as MakeswiftPageProps,
 } from "@makeswift/runtime/next";
+import {runtime} from "../lib/makeswift/register-components";
 
 type ParsedUrlQuery = { path?: string[] };
 
@@ -19,6 +20,7 @@ export async function getStaticPaths(): Promise<
 > {
   const makeswift = new Makeswift(process.env.MAKESWIFT_SITE_API_KEY!, {
     apiOrigin: process.env.MAKESWIFT_API_HOST,
+    runtime
   });
   const pages = await makeswift.getPages();
 
@@ -39,10 +41,12 @@ export async function getStaticProps(
 ): Promise<GetStaticPropsResult<Props>> {
   const makeswift = new Makeswift(process.env.MAKESWIFT_SITE_API_KEY!, {
     apiOrigin: process.env.MAKESWIFT_API_HOST,
+    runtime
   });
   const path = "/" + (ctx.params?.path ?? []).join("/");
   const snapshot = await makeswift.getPageSnapshot(path, {
     preview: ctx.preview,
+    locale: ctx.locale,
   });
 
   if (snapshot == null) return { notFound: true };

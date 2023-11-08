@@ -1,4 +1,5 @@
 import { MakeswiftApiHandler } from "@makeswift/runtime/next";
+import {runtime} from "../../../lib/makeswift/register-components";
 
 export default MakeswiftApiHandler(process.env.MAKESWIFT_SITE_API_KEY!, {
   getFonts: () => [
@@ -14,4 +15,5 @@ export default MakeswiftApiHandler(process.env.MAKESWIFT_SITE_API_KEY!, {
     },
   ],
   appOrigin: process.env.MAKESWIFT_APP_ORIGIN,
+  runtime,
 });
