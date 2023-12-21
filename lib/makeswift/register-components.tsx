@@ -10,18 +10,13 @@ import {
 } from "@makeswift/runtime/controls";
 import { ControlDefinitionValue } from "@makeswift/runtime/dist/types/src/runtimes/react/controls/control";
 import { ReactRuntime } from "@makeswift/runtime/react";
-import {
-  BlockPlugin,
-  InlinePlugin,
-  LinkPlugin,
-  TextAlignPlugin,
-  TypographyPlugin,
-} from "@makeswift/runtime/slate";
+import  NextLink from "next/link";
 
-import { ForwardedRef, forwardRef, ReactNode } from "react";
+import React, { ForwardedRef, forwardRef, ReactNode } from "react";
 
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
+import classNames from "classnames";
 
 export const runtime = new ReactRuntime()
 
@@ -313,7 +308,7 @@ const RichtextUpgrade = forwardRef(function HelloWorld(
   );
 });
 
-runtime.registerComponent(RichtextUpgrade, {
+runtime.registerComponent(RichtextUpgrade as any, {
   type: "rich-text-v1",
   label: "rich-text-component",
   props: {
@@ -322,3 +317,39 @@ runtime.registerComponent(RichtextUpgrade, {
     className: Style({ properties: [Style.Width, Style.Margin] }),
   },
 });
+
+
+const LinkWrappedInline = forwardRef(function HelloWorld(
+    {
+        className,
+        richtext,
+        ...props
+    }: {
+        className?: string;
+        richtext?: ReactNode;
+    },
+    ref: ForwardedRef<HTMLDivElement>
+    ) {
+    return (
+        <NextLink
+            href="https://privacy.transcend.io/policies"
+            target="_blank"
+            className={classNames(
+                className
+            )}
+        >
+          {richtext}
+        </NextLink>
+    );
+    });
+
+runtime.registerComponent(LinkWrappedInline as any, {
+  type: "link-wrapped-inline",
+    label: "Link Wrapped Inline",
+    props: {
+        richtext: RichText({
+            mode: RichText.Mode.Block,
+        }),
+        className: Style({ properties: [Style.Width, Style.Margin] }),
+    },
+})

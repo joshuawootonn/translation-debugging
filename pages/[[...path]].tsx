@@ -41,7 +41,8 @@ export async function getStaticProps(
 ): Promise<GetStaticPropsResult<Props>> {
   const makeswift = new Makeswift(process.env.MAKESWIFT_SITE_API_KEY!, {
     apiOrigin: process.env.MAKESWIFT_API_HOST,
-    runtime
+    runtime,
+    siteVersion: Makeswift.getSiteVersion(ctx.previewData)
   });
   const path = "/" + (ctx.params?.path ?? []).join("/");
   const snapshot = await makeswift.getPageSnapshot(path, {
@@ -55,5 +56,6 @@ export async function getStaticProps(
 }
 
 export default function Page({ snapshot }: Props) {
-  return <MakeswiftPage snapshot={snapshot} />;
+  //@ts-ignore
+  return <MakeswiftPage  snapshot={snapshot} runtime={runtime} />;
 }

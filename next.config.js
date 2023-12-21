@@ -7,7 +7,7 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 const nextConfig = {
     reactStrictMode: true,
     i18n: {
-        locales: ["en-US", "en-FR", "fr-FR"],
+        locales: ["en-US", "en-FR", "fr-FR",'en-AT','de-AT'],
         defaultLocale: "en-US",
     }
 };
