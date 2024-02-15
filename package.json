@@ -6,9 +6,9 @@
     "dev:prod": "env-cmd -f ./.env.prod next dev -p 3002",
     "dev:staging": "env-cmd -f ./.env.staging next dev -p 3001",
     "build": "next build",
-    "build:deployed": "env-cmd -f ./.env.deployed next build",
+    "build:prod": "env-cmd -f ./.env.prod next build",
     "start": "next start",
-    "start:deployed": "env-cmd -f ./.env.deployed next start -p 3001",
+    "start:prod": "env-cmd -f ./.env.prod next start -p 3001",
     "lint": "next lint"
   },
   "dependencies": {
