@@ -42,11 +42,10 @@ export async function getStaticProps(
   const makeswift = new Makeswift(process.env.MAKESWIFT_SITE_API_KEY!, {
     apiOrigin: process.env.MAKESWIFT_API_HOST,
     runtime,
-    siteVersion: Makeswift.getSiteVersion(ctx.previewData)
   });
   const path = "/" + (ctx.params?.path ?? []).join("/");
   const snapshot = await makeswift.getPageSnapshot(path, {
-    preview: ctx.preview,
+    siteVersion: Makeswift.getSiteVersion(ctx.previewData),
     locale: ctx.locale,
   });
 
@@ -56,6 +55,5 @@ export async function getStaticProps(
 }
 
 export default function Page({ snapshot }: Props) {
-  //@ts-ignore
   return <MakeswiftPage  snapshot={snapshot} runtime={runtime} />;
 }
