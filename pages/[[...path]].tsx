@@ -19,7 +19,7 @@ export async function getStaticPaths(): Promise<
   GetStaticPathsResult<ParsedUrlQuery>
 > {
   const makeswift = new Makeswift(process.env.MAKESWIFT_SITE_API_KEY!, {
-    apiOrigin: process.env.MAKESWIFT_API_HOST,
+    apiOrigin: process.env.MAKESWIFT_API_ORIGIN,
     runtime
   });
   const pages = await makeswift.getPages();
@@ -40,7 +40,7 @@ export async function getStaticProps(
   ctx: GetStaticPropsContext<ParsedUrlQuery>
 ): Promise<GetStaticPropsResult<Props>> {
   const makeswift = new Makeswift(process.env.MAKESWIFT_SITE_API_KEY!, {
-    apiOrigin: process.env.MAKESWIFT_API_HOST,
+    apiOrigin: process.env.MAKESWIFT_API_ORIGIN,
     runtime,
   });
   const path = "/" + (ctx.params?.path ?? []).join("/");
