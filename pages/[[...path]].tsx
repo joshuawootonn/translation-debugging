@@ -11,7 +11,7 @@ import {
   Page as MakeswiftPage,
   PageProps as MakeswiftPageProps,
 } from "@makeswift/runtime/next";
-import {runtime} from "../lib/makeswift/register-components";
+import {runtime} from "../lib/makeswift/runtime";
 
 type ParsedUrlQuery = { path?: string[] };
 
