@@ -1,14 +1,9 @@
 {
   "private": true,
   "scripts": {
-    "dev": "NODE_OPTIONS='--inspect' next dev",
-    "dev:local": "env-cmd -f ./.env.local  next dev -p 3000",
-    "dev:prod": "env-cmd -f ./.env.prod next dev -p 3002",
-    "dev:staging": "env-cmd -f ./.env.staging next dev -p 3001",
+    "dev": "next dev",
     "build": "next build",
-    "build:prod": "env-cmd -f ./.env.prod next build",
     "start": "next start",
-    "start:prod": "env-cmd -f ./.env.prod next start -p 3001",
     "lint": "next lint"
   },
   "dependencies": {
